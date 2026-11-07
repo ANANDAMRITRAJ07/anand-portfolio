@@ -37,11 +37,15 @@ function Hero() {
   const [show3D, setShow3D] = useState(false);
 
   useEffect(() => {
-    setShow3D(!reduceMotion && window.matchMedia("(min-width: 1024px)").matches);
+    const query = window.matchMedia("(min-width: 981px)");
+    const update = () => setShow3D(!reduceMotion && query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
   }, [reduceMotion]);
 
   return (
-    <section id="home" className="relative isolate min-h-screen flex items-center px-6 md:px-16 overflow-hidden">
+        <section id="home" className="relative isolate min-h-0 min-[981px]:min-h-screen flex items-center px-6 md:px-16 pt-28 pb-16 min-[981px]:py-0 overflow-hidden">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 opacity-60" style={{ backgroundImage: "linear-gradient(var(--color-border) 1px, transparent 1px), linear-gradient(90deg, var(--color-border) 1px, transparent 1px)", backgroundSize: "56px 56px", maskImage: "radial-gradient(ellipse at center, black 25%, transparent 75%)", WebkitMaskImage: "radial-gradient(ellipse at center, black 25%, transparent 75%)" }} />
         <motion.div className="absolute -top-32 left-1/4 h-[28rem] w-[28rem] rounded-full bg-accent/25 blur-3xl" animate={reduceMotion ? undefined : { x: [0, 80, -40, 0], y: [0, 40, 80, 0] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} />
